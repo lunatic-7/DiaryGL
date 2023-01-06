@@ -1,0 +1,371 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} DiaryGL {% endblock title %}
+
+{% block body %}
+    <style>
+        body {
+            font-family: cursive;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            padding-left: 1rem;
+        }
+
+        .img-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .img {
+            width: 35%;
+        }
+
+        .options {
+            text-align: center;
+            margin: 0 35%;
+            display: flex;
+            justify-content: center;
+            justify-content: space-between;
+            margin-top: 3rem;
+        }
+
+        .ico {
+            width: 5rem;
+        }
+
+        form {
+            width: 500px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 120px;
+            height: 40px;
+            font-family: cursive;
+            font-size: 16px;
+            margin-right: 2rem;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 1.5px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        #spin:hover {
+            background-color: #333;
+        }
+
+        /* Spinner Css */
+        .book-spinner {
+            perspective: 1000px;
+            perspective-origin: 50% 50%;
+            width: 40px;
+            height: 40px;
+            position: relative;
+            animation: flip 2s infinite;
+            box-shadow: 2px 5px 5px #000;
+        }
+
+        .book-front,
+        .book-back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.5s;
+        }
+
+        .book-front {
+            transform: rotateY(0deg);
+            background: white;
+        }
+
+        .book-back {
+            transform: rotateY(180deg);
+            background: black;
+        }
+
+        @keyframes flip {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            50% {
+                transform: rotateY(180deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+
+        #tooltipB {
+            visibility: hidden;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        #tooltipG {
+            visibility: hidden;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        #tooltipL {
+            visibility: hidden;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .footBar {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .headring {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .authin {
+            padding: 2rem;
+        }
+
+        .authend {
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .au {
+            padding: 0 1.1rem;
+            font-weight: 600;
+            font-size: large;
+        }
+
+        .au:hover {
+            text-decoration: underline;
+        }
+
+        .user_wel {
+            padding-right: 1rem;
+        }
+
+        .user {
+            font-weight: 600;
+            font-family: monospace;
+            font-size: larger;
+            color: green;
+        }
+
+        #tooltipEr {
+            text-align: end;
+            padding-right: 1rem;
+            color: red;
+            visibility: hidden;
+        }
+
+        .booka {
+            color: rgb(153, 1, 1);
+            font-weight: 600;
+        }
+
+        .booka:hover {
+            text-decoration: underline;
+        }
+
+        .ico2 {
+            cursor: not-allowed;
+        }
+
+        /* Add media queries at the end of the style sheet */
+
+        /* For screens smaller than 480px (e.g. smartphones), make the image width 100% and center it */
+        @media only screen and (max-width: 480px) {
+            .img {
+                width: 100%;
+            }
+
+            .img-container {
+                text-align: center;
+            }
+
+
+            .options {
+                margin: 0 15%;
+            }
+
+            form {
+                margin: 20px 0;
+                width: 100%;
+            }
+
+            textarea {
+                width: 90%;
+            }
+
+            button {
+                width: 100px;
+                height: 30px;
+                font-size: 13px;
+                margin-right: 2rem;
+                margin-left: 1.3rem;
+            }
+
+            .au {
+                font-size: 16px;
+            }
+
+            .options {
+                margin-left: 5rem;
+                margin-top: 3rem;
+            }
+
+            .authend {
+                padding: 0.7rem;
+            }
+        }
+    </style>
+
+<body>
+    <div class="headring">
+        <h2>DiaryGL</h2>
+        {% if user.is_authenticated %}
+        <div class="authend">
+            <p class="user_wel">Welcome -> <span class="user">{{request.user}}</span></p>
+            <a class="au" href="/logout/" class="btn">Log out</a>
+        </div>
+        {% else %}
+        <div class="authin">
+            <a class="au" href="/login">Log In</a>
+            <a class="au" href="/signup">Sign Up</a>
+        </div>
+        {% endif %}
+    </div>
+    <div class="img-container">
+        <img class="img" src="{% static 'img/logo.jpg' %}" alt="DiaryGL">
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <textarea id="funcl" name="prompt" rows="4" cols="50"></textarea><br>
+        <div style="display: flex;">
+            <button id="spin" type="submit">Search &nbsp; <i class="fa-solid fa-magnifying-glass"></i></button>
+            <!-- Add spinner element -->
+            <div class="spinner" style="display: none;">
+                <div class="book-spinner">
+                    <div class="book-front">
+                        <div class="loading"></div>
+                    </div>
+                    <div class="book-back">
+                        <div class="loading"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="options">
+        <div class="footBar">
+            {% if user.is_authenticated %}
+            <a href="/bookmark" onmouseover="showToolBook()" onmouseout="hideToolBook()"><i
+                    class="ico fa-solid fa-bookmark fa-2x"></i></a>
+            <span id="tooltipB">Bookmarks</span>
+            {% else %}
+            <i class="ico2 fa-solid fa-bookmark fa-2x" onmouseover="showToolEr()" onmouseout="hideToolEr()"></i></>
+            {% endif %}
+        </div>
+
+        <div class="footBar">
+            <a href="https://github.com/lunatic-7" onmouseover="showToolGit()" onmouseout="hideToolGit()"
+                target="_blank"><i class="ico fa-brands fa-github fa-2x"></i></a>
+            <span id="tooltipG">Github</span>
+        </div>
+
+        <div class="footBar">
+            <a href="https://www.linkedin.com/in/wasif-nadeem-745225220/" onmouseover="showToolLin()"
+                onmouseout="hideToolLin()" target="_blank"><i class="ico fa-brands fa-linkedin fa-2x"></i></a>
+            <span id="tooltipL">LinkedIN</span>
+        </div>
+
+    </div>
+    <div class="booker" id="tooltipEr">
+        <span>You must be <a class="booka" href="/login">Logged In</a> to access / add bookmarks!</span>
+    </div>
+
+    <script>
+        // Show the spinner
+        let spin = document.getElementById("spin")
+        spin.addEventListener("click", function () {
+            document.querySelector('.spinner').style.display = 'flex';
+        })
+
+        // Bookmark Tooltip
+        function showToolBook() {
+            document.getElementById('tooltipB').style.visibility = 'visible';
+        }
+
+        function hideToolBook() {
+            document.getElementById('tooltipB').style.visibility = 'hidden';
+        }
+
+        // Github Tooltip
+        function showToolGit() {
+            document.getElementById('tooltipG').style.visibility = 'visible';
+        }
+
+        function hideToolGit() {
+            document.getElementById('tooltipG').style.visibility = 'hidden';
+        }
+
+        // Linked Tooltip
+        function showToolLin() {
+            document.getElementById('tooltipL').style.visibility = 'visible';
+        }
+
+        function hideToolLin() {
+            document.getElementById('tooltipL').style.visibility = 'hidden';
+        }
+
+        // Error Tooltip
+        function showToolEr() {
+            document.getElementById('tooltipEr').style.visibility = 'visible';
+        }
+
+        function hideToolEr() {
+            document.getElementById('tooltipEr').style.visibility = 'hidden';
+        }
+
+        // Submit on Enter key
+        document.getElementById("funcl").addEventListener("keypress", submitOnEnter);
+
+        function submitOnEnter(event) {
+            if (event.which === 13) {
+                // event.target.form.dispatchEvent(new Event("submit", { cancelable: true }));
+                event.target.form.submit();
+                document.querySelector('.spinner').style.display = 'flex';
+                event.preventDefault(); // Prevents the addition of a new line in the text field (not needed in a lot of cases)
+            }
+        }
+
+    </script>
+{% endblock body %}

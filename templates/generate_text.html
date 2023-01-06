@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %} DiaryGL | Result {% endblock title %}
+
+{% block body %}
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: cursive;
+            margin: 20px 0;
+            font-size: 36px;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            font-family: monospace;
+            color: #555;
+        }
+
+        .prom {
+            text-decoration: underline;
+            color: #444;
+        }
+
+        p {
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.5;
+            padding: 2rem;
+            margin: 20px 0;
+            color: #666;
+        }
+
+        form {
+            padding-left: 5rem;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+
+        i:hover {
+            color: green;
+        }
+
+        .temp {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #tooltip {
+            visibility: hidden;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        pre {
+            white-space: pre-wrap;
+        }
+
+        .ico2 {
+            cursor: not-allowed;
+        }
+
+        #tooltipEr {
+            text-align: end;
+            padding-right: 1rem;
+            color: red;
+            visibility: hidden;
+        }
+
+        .booka {
+            color: rgb(153, 1, 1);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .booka:hover {
+            text-decoration: underline;
+        }
+
+        /* Add media queries at the end of the style sheet */
+
+        /* For screens smaller than 480px (e.g. smartphones), make the image width 100% and center it */
+        @media only screen and (max-width: 480px) {
+            p {
+                font-size: 14px;
+            }
+
+            .temp {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+    <title>DiaryGL | Results</title>
+</head>
+
+<body>
+    <h1>Generated Text</h1>
+    <div class="temp">
+        <h2>Your prompt: <span class="prom">{{ prompt }}</span></h2>
+        <form method="post" action="{% url 'create_book' %}">
+            {% csrf_token %}
+            <textarea name="title" id="id_title" hidden>{{prompt}}</textarea>
+            <textarea id="id_text" name="text" hidden>{{message}}</textarea>
+
+            {% if user.is_authenticated %}
+            <button type="submit" value="Save" onmouseover="showTooltip()" onmouseout="hideTooltip()">
+                <i class="ico fa-solid fa-bookmark fa-2x"></i>
+            </button>
+            <span id="tooltip">Bookmark</span>
+            {% else %}
+            <i class="ico2 fa-solid fa-bookmark fa-2x" onmouseover="showToolEr()" onmouseout="hideToolEr()"></i></>
+            {% endif %}
+
+        </form>
+    </div>
+
+    <pre><p>{{ message }}</p></pre>
+
+    <div class="booker" id="tooltipEr">
+        <span>You must be <a class="booka" href="/login">Logged In</a> to access / add bookmarks!</span>
+    </div>
+
+    <script>
+        function showTooltip() {
+            document.getElementById('tooltip').style.visibility = 'visible';
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').style.visibility = 'hidden';
+        }
+
+
+        // Error Tooltip
+        function showToolEr() {
+            document.getElementById('tooltipEr').style.visibility = 'visible';
+        }
+
+        function hideToolEr() {
+            document.getElementById('tooltipEr').style.visibility = 'hidden';
+        }
+    </script>
+{% endblock body %}

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %} Bookmark | Details {% endblock title %}
+
+{% block body %}
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: cursive;
+            margin: 20px 0;
+            font-size: 36px;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            font-family: monospace;
+            color: #555;
+        }
+
+        .prom {
+            text-decoration: underline;
+            color: #444;
+        }
+
+        form {
+            padding-left: 5rem;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        i:hover {
+            color: red;
+        }
+
+        p {
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.5;
+            padding: 2rem;
+            margin: 20px 0;
+            color: #666;
+        }
+
+        .temp {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #tooltip {
+            visibility: hidden;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        pre {
+            white-space: pre-wrap;
+        }
+
+        /* Add media queries at the end of the style sheet */
+
+        /* For screens smaller than 480px (e.g. smartphones), make the image width 100% and center it */
+        @media only screen and (max-width: 480px) {
+            p {
+                font-size: 14px;
+            }
+            
+            .temp {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+    <title>DiaryGL | Bookmarks</title>
+</head>
+
+<body>
+    <h1>Your Bookmark</h1>
+    <div class="temp">
+        <h2>Your prompt: <span class="prom">{{ book.title }}</span></h2>
+        {% if book.user == user %}
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" onmouseover="showTooltip()" onmouseout="hideTooltip()"><i
+                    class="fa-solid fa-trash fa-2x"></i></button>
+            <span id="tooltip">Delete</span>
+        </form>
+        {% endif %}
+    </div>
+    <pre><p>{{ book.text }}</p></pre>
+
+    <script>
+        function showTooltip() {
+            document.getElementById('tooltip').style.visibility = 'visible';
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').style.visibility = 'hidden';
+        }
+    </script>
+
+{% endblock body %}

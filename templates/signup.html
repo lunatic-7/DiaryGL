@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %} Sign Up {% endblock title %}
+{% block body %}
+
+<style>
+    .diaryGL {
+        display: flex;
+        flex-direction: row;
+        flex-direction: row;
+        margin: auto;
+        background-color: #eee;
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin-top: 1rem;
+        box-sizing: border-box;
+    }
+
+    .headingGL {
+        flex: 1;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        padding-right: 1.5rem;
+    }
+
+    .headingGL h2 {
+        font-family: cursive;
+    }
+
+    .diaryGL form {
+        flex: 1;
+        max-width: 500px;
+        margin: auto;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 20px;
+        box-sizing: border-box;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .diaryGL form h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .diaryGL form p {
+        margin-bottom: 20px;
+    }
+
+    .diaryGL form label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    .diaryGL form input[type="text"],
+    .diaryGL form input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+
+    .diaryGL form input[type="submit"] {
+        width: 100%;
+        background-color: #4caf50;
+        color: #fff;
+        padding: 14px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .diaryGL form input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .diary {
+        text-decoration: none;
+        color: #555;
+    }
+
+    .diary:hover {
+        text-decoration: underline;
+        color: #333;
+    }
+
+    /* Add media queries at the end of the style sheet */
+
+    /* For screens smaller than 480px (e.g. smartphones), make the image width 100% and center it */
+    @media only screen and (max-width: 480px) {
+        .diaryGL p {
+            font-size: 14px;
+        }
+
+        .diaryGL {
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+</style>
+<div class="diaryGL">
+    <div class="headingGL">
+        <h2>What is <a class="diary" href="/">DiaryGl</a>  ?</h2>
+        <p>
+            DiaryGL is a search engine powered by OpenAI that allows users to save and organize their bookmarks in one
+            place. With DiaryGL, you can search the web for any topic and save the most relevant and useful results as
+            bookmarks, which can be accessed and sorted by date, topic, or other criteria. <br> <br>
+
+            One of the key features of DiaryGL is its ability to use artificial intelligence to understand the context
+            and
+            meaning of your search queries, providing more accurate and relevant results. This makes it easier to find
+            the
+            information you need, whether you're researching a specific topic or looking for inspiration. <br> <br>
+
+            In addition to its search capabilities, DiaryGL also offers a bookmarking feature that lets you save and
+            categorize your bookmarks in a personal diary. This allows you to organize and access your saved content
+            more
+            easily, making it a great tool for students, researchers, and anyone who frequently uses the web for
+            information. <br> <br>
+
+            Overall, DiaryGL is a powerful and convenient tool for anyone who relies on the internet for information and
+            inspiration. Its combination of advanced search capabilities and bookmarking features makes it an essential
+            resource for anyone looking to make the most of their online experience.
+        </p>
+    </div>
+    <form method="post">
+        <h2>Sign up</h2>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Sign up">
+        <p>Already have an account! <a href="/login">Log In</a> instead.</p>
+    </form>
+</div>
+{% endblock body %}

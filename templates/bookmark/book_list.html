@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %} Bookmark | List {% endblock title %}
+
+{% block body %}
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: rgb(249, 249, 249);
+        }
+
+        h1 {
+            text-align: center;
+            font-family: cursive;
+            margin: 20px 0;
+            font-size: 36px;
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 2rem;
+        }
+
+        li {
+            width: 60%;
+            margin-bottom: 3rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .card .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .card .title {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .card .text {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card .button {
+            border: none;
+            color: black;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .card .button:hover {
+            color: #444;
+        }
+
+        .bookit {
+            font-weight: 600;
+            font-family: monospace;
+            font-size: x-large;
+        }
+
+        /* Add media queries at the end of the style sheet */
+
+        /* For screens smaller than 480px (e.g. smartphones), make the image width 100% and center it */
+        @media only screen and (max-width: 480px) {
+            li {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Bookmarks</h1>
+    <ul>
+        {% if book_list|length > 0 %}
+        {% for book in book_list %}
+        <li>
+            <div class="card">
+                <div class="content">
+                    <h2 class="title">{{ book.title }}</h2>
+                    <p class="text">{{ book.text|truncatewords:40 }}</p>
+                    <a href="{% url 'book_detail' book_id=book.id %}" class="button">View details</a>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+        {% else %}
+        <p class="bookit">You have no Bookmarks! Add some to view them...</p>
+        {% endif %}
+    </ul>
+
+{% endblock body %}
